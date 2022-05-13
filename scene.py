@@ -23,6 +23,7 @@ Camera:
 MAT_LAMBERTIAN = 1
 MAT_LIGHT = 2
 
+
 class Camera:
     def __init__(self, window, up):
         self._window = window
@@ -180,7 +181,8 @@ class Scene:
                 timestamp = datetime.today().strftime('%Y-%m-%d-%H%M%S')
                 dirpath = os.getcwd()
                 main_filename = os.path.split(__main__.__file__)[1]
-                fname = os.path.join(dirpath, 'screenshot', f"{main_filename}-{timestamp}.jpg")
+                fname = os.path.join(dirpath, 'screenshot',
+                                     f"{main_filename}-{timestamp}.jpg")
                 ti.tools.image.imwrite(img, fname)
                 print(f"Screenshot has been saved to {fname}")
             canvas.set_image(img)
