@@ -43,7 +43,7 @@ def body(pos, a, mat):
         if abs(rho - a * (1 - sin)) <= 2:
             circle(pos, j, r, mat, red, False)
         # draw the cross-section
-        if rho - a * (1 - sin) < 0:
+        if rho - a * (1 - sin) < -1:
             scene.set_voxel(vec3(r, j, 0), mat, yellow)
             scene.set_voxel(vec3(-r, j, 0), mat, yellow)
             if j < 0:
