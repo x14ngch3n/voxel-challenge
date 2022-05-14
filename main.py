@@ -9,7 +9,6 @@ scene.set_background_color((0.8, 0.8, 0.8))
 
 red = vec3(255 / 255, 40.0 / 255, 40.0 / 255)
 yellow = vec3(239.0 / 255, 243.0 / 255, 109.0 / 255)
-black = vec3(0, 0, 0)
 brown = vec3(45.0 / 255, 45.0 / 255, 2.0 / 255)
 green = vec3(13.0 / 255, 100.0 / 255, 13.0 / 255)
 
@@ -50,8 +49,8 @@ def body(pos, a, mat):
                 circle(pos, j, r, mat, yellow, True)
 
     # draw the apple's core
-    ellipse(vec3(5, -24, 0), 6, 2, mat, black)
-    ellipse(vec3(-5, -24, 0), 6, 2, mat, black)
+    ellipse(vec3(5, -24, 0), 6, 2, mat, vec3(0, 0, 0))
+    ellipse(vec3(-5, -24, 0), 6, 2, mat, vec3(0, 0, 0))
 
 
 @ti.func
