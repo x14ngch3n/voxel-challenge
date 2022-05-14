@@ -1,16 +1,17 @@
-from sympy import true
 from scene import Scene
 import taichi as ti
-from taichi.math import *
+from taichi.math import vec3
 
-scene = Scene(voxel_edges=0, exposure=3)
+scene = Scene(voxel_edges=0, exposure=2)
 scene.set_floor(-1, (0.8, 0.8, 0.8))
-scene.set_directional_light((0, 1, 0), 0.2, (1, 1, 1))
+scene.set_directional_light((-1, 1, 1), 0.2, (1, 1, 1))
 scene.set_background_color((0.8, 0.8, 0.8))
 
 red = vec3(255 / 255, 40. / 255, 40. / 255)
 yellow = vec3(239. / 255, 243. / 255, 109. / 255)
 black = vec3(0, 0, 0)
+brown = vec3(45. / 255, 45. / 255, 2. / 255)
+green = vec3(13. / 255, 185. / 255, 54. / 255)
 
 
 @ti.func
@@ -38,7 +39,7 @@ def body(pos, a, mat):
         if abs(rho - a * (1 - sin)) <= 2:
             circle(pos, j, r, mat, red)
         # draw the cross-section
-        if rho - a * (1 - sin) <= 0:
+        if rho - a * (1 - sin) < 0:
             scene.set_voxel(vec3(r, j, 0), mat, yellow)
             scene.set_voxel(vec3(-r, j, 0), mat, yellow)
 
@@ -47,11 +48,23 @@ def body(pos, a, mat):
     ellipse(vec3(-5, -24, 0), 4, 1, mat, black)
 
 
+@ti.func
+def leaf(pos, mat):
+    # draw the leaf's stem
+    for i in range(10):
+        for j in range(pos[1] + 2 * i, pos[1] + 2 * i + 4):
+            scene.set_voxel(vec3(i, j, 0), mat, brown)
+    for i in range(7):
+        for j in range(pos[1] + 2 * i, pos[1] + 2 * i + 4):
+            scene.set_voxel(vec3(-i, j, 0), mat, brown)
+
+
 @ti.kernel
 def initialize_voxels():
     # Your code here! :-)
     pos = vec3(0, 0, 0)
     body(pos, 32, 1)
+    leaf(pos, 1)
 
 
 initialize_voxels()
