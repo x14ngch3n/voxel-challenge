@@ -15,7 +15,6 @@ green = vec3(13.0 / 255, 100.0 / 255, 13.0 / 255)
 
 @ti.func
 def circle(pos, j, r, mat, color, fill):
-    # draw a circle on plane as a slice
     for i, k in ti.ndrange((-64, 64), (-64, 0)):
         if fill:
             if ((i - pos[0]) ** 2 + (k - pos[2]) ** 2) ** 0.5 - r <= 1:
@@ -34,21 +33,17 @@ def ellipse(pos, a, b, mat, color):
 
 @ti.func
 def body(pos, a, mat):
-    # draw the apple's half body with a cross-section
     for j, r in ti.ndrange((-64, 64), (0, 64)):
         rho = ((j - pos[1]) ** 2 + r**2) ** 0.5
         sin = j / rho
-        # draw the body
         if abs(rho - a * (1 - sin)) <= 2:
             circle(pos, j, r, mat, red, False)
-        # draw the cross-section
         if rho - a * (1 - sin) < -1:
             scene.set_voxel(vec3(r, j, 0), mat, yellow)
             scene.set_voxel(vec3(-r, j, 0), mat, yellow)
             if j < 0:
                 circle(pos, j, r, mat, yellow, True)
 
-    # draw the apple's core
     ellipse(vec3(5, -24, 0), 6, 2, mat, vec3(0, 0, 0))
     ellipse(vec3(-5, -24, 0), 6, 2, mat, vec3(0, 0, 0))
 
@@ -77,7 +72,6 @@ def top(pos, mat, root1, root2):
 
 @ti.func
 def bite(pos, a, b, c):
-    # subtract a ellptic sphere
     for i, j, k in ti.ndrange((-64, 64), (-64, 64), (-64, 64)):
         if (
             (b * c * (i - pos[0])) ** 2 + (a * c * (j - pos[1])) ** 2 + (a * b * (k - pos[2])) ** 2
@@ -87,7 +81,6 @@ def bite(pos, a, b, c):
 
 @ti.kernel
 def initialize_voxels():
-    # Your code here! :-)
     pos = vec3(0, 0, 0)
     body(pos, 32, 1)
     top(pos, 1, 10, 7)
